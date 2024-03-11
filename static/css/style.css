@@ -1,0 +1,52 @@
+.body-home{
+    background: #ED213A;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #93291E, #ED213A);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #93291E, #ED213A); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    background-size: cover;
+}
+
+
+#signup-body{
+    background: #833ab4;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #fcb045, #fd1d1d, #833ab4);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #fcb045, #fd1d1d, #833ab4); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+    
+    background-size: cover;
+
+}
+
+#signup-h1{text-align: center;}
+
+.signup-box{
+    height: 350px;
+    width: 270px;
+    background-color: white;
+    border-radius: 4px;
+    padding: 10px;
+    margin: auto;
+    text-align: center;
+    opacity: 0.8;
+}
+
+#login-body{
+    background: #FFB75E;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #ED8F03, #FFB75E);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #ED8F03, #FFB75E); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+
+    background-size: cover;}
+
+#login-h1{text-align: center;}
+
+.login-box{
+    height: 250px;
+    width: 250px;
+    background-color: white;
+    border-radius: 4px;
+    padding: 10px;
+    margin: auto;
+    text-align: center;
+    opacity: 0.8;
+}
+
