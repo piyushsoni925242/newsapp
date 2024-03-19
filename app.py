@@ -1,7 +1,10 @@
-from flask import Flask,render_template,request,redirect,url_for
+from flask import Flask,render_template,request,redirect,url_for,session
 import pymysql as sql
 from newsapi import NewsApiClient
+
 app =  Flask(__name__)
+
+app.secret_key='something went wrong'
 
 def password_validation(password : str):
     if len(password) >= 8:
@@ -53,18 +56,24 @@ def db_connect():
 
 @app.route('/')
 def home():
-    top_headlines = newsapi.get_top_headlines(country="in", language="en") 
-    total_results = top_headlines['totalResults'] 
-    if total_results > 100: 
-            total_results = 100
-    all_headlines = newsapi.get_top_headlines(country="in", 
-                                                     language="en",  
-                                                     page_size=total_results)['articles'] 
-    return render_template("home.html", all_headlines = all_headlines) 
+    if "email" in session:
+        top_headlines = newsapi.get_top_headlines(country="in", language="en") 
+        total_results = top_headlines['totalResults'] 
+        if total_results > 100: 
+                total_results = 100
+        all_headlines = newsapi.get_top_headlines(country="in", 
+                                                        language="en",  
+                                                        page_size=total_results)['articles'] 
+        return render_template("home.html", all_headlines = all_headlines) 
+    else:
+        return render_template("login.html") 
 
 @app.route('/login')
 def login():
-    return render_template('login.html')
+    if 'email' in session:
+        return redirect('/')
+    else:
+        return render_template('login.html')
     
 
 @app.route('/signup')
@@ -122,6 +131,8 @@ def afterlogin():
         db.close()
         if data:
             if data[0][3] == password:
+                session['email'] = email
+                session['password'] = password
                 msg = 'login successfully. . . . '
                 return render_template("afterlogin.html", msg=msg)
             else:
@@ -134,30 +145,37 @@ def afterlogin():
 
 @app.route('/khabar',methods=['GET','POST'])
 def khabar():
-    if request.method == "POST": 
-        sources, domains = get_sources_and_domains() 
-        keyword = request.form["keyword"] 
-        related_news = newsapi.get_everything(q=keyword, 
-                                      sources=sources, 
-                                      domains=domains, 
-                                      language='en', 
-                                      sort_by='relevancy') 
-        no_of_articles = related_news['totalResults'] 
-        if no_of_articles > 100: 
-            no_of_articles = 100
-        all_articles = newsapi.get_everything(q=keyword, 
-                                      sources=sources, 
-                                      domains=domains, 
-                                      language='en', 
-                                      sort_by='relevancy', 
-                                      page_size = no_of_articles)['articles'] 
-        return render_template("khabar.html", all_articles = all_articles,  
-                               keyword=keyword) 
+    if 'email' in session:
+        if request.method == "POST": 
+            sources, domains = get_sources_and_domains() 
+            keyword = request.form["keyword"] 
+            related_news = newsapi.get_everything(q=keyword, 
+                                        sources=sources, 
+                                        domains=domains, 
+                                        language='en', 
+                                        sort_by='relevancy') 
+            no_of_articles = related_news['totalResults'] 
+            if no_of_articles > 100: 
+                no_of_articles = 100
+            all_articles = newsapi.get_everything(q=keyword, 
+                                        sources=sources, 
+                                        domains=domains, 
+                                        language='en', 
+                                        sort_by='relevancy', 
+                                        page_size = no_of_articles)['articles'] 
+            return render_template("khabar.html", all_articles = all_articles,  
+                                keyword=keyword) 
+        else:
+            return render_template("khabar.html")
     else:
-        return render_template("khabar.html")
+        return render_template('login.html')
 @app.route('/logout')
 def logout():
-    return redirect('/')
+    if 'email' in session:
+        session.pop('email')
+        return redirect('login')
+    else:
+        return redirect('login')
 
 if __name__ == "__main__":
     app.run(debug=True)

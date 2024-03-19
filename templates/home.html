@@ -7,7 +7,6 @@
     <title>Taza khabar</title>
   </head>
   <body>
-    {% block head %}
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <div class="container-fluid">
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
@@ -25,12 +24,14 @@
               <li class="nav-item">
                 <a class="nav-link active" href="{{url_for('signup')}}">Signup</a>
               </li>
+              <li class="nav-item">
+                <a class="nav-link active" href="{{url_for('logout')}}">logout</a>
+              </li>
             </ul>
           </div>
         </div>
       </nav>
         
-{% endblock %}
 
       {% if all_headlines %} 
         <center><h1>Headlines</h1></center> 
